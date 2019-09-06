@@ -19,19 +19,32 @@ func (r *RoundRobinBalance) Name() string {
 	return "roundrobin"
 }
 
+/*
 func gcdNormal(x, y int) int {
-	var n int
-	if x > y {
-		n = y
+	if x%y == 0 {
+		return y
 	} else {
-		n = x
+		return gcdNormal(y, x%y)
 	}
-	for i := n; i >= 1; i-- {
-		if x%i == 0 && y%i == 0 {
-			return i
-		}
+}
+*/
+
+func gcd1(m int, n int) int {
+	var r int
+	for n > 0 {
+		r = m % n
+		m = n
+		n = r
 	}
-	return 1
+	return m
+}
+
+func gcdNormal(m int, n int) int {
+	if n > 0 {
+		return gcd1(n, m%n)
+	} else {
+		return m
+	}
 }
 
 func (r *RoundRobinBalance) getGcd() int {
@@ -42,8 +55,23 @@ func (r *RoundRobinBalance) getGcd() int {
 }
 
 func (r *RoundRobinBalance) calGcd(nodes []*registry.Node) {
-	//TODO未实现各个节点的权重的最大公约数
-	r.gcd <- 2
+	if len(nodes) < 2 {
+		r.gcd <- nodes[0].Weight
+		return
+	}
+
+	x := nodes[0].Weight
+	for _, val := range nodes {
+		if val.Weight > 0 && x > 0 {
+			x = gcdNormal(x, val.Weight)
+		} else {
+			r.gcd <- 0
+			return
+		}
+	}
+
+	r.gcd <- x
+	return
 }
 
 func (r *RoundRobinBalance) getMaxWeight() int {

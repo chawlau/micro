@@ -53,7 +53,7 @@ func TestRoundTest(t *testing.T) {
 		curWeight: -1,
 	}
 
-	var weights = [4]int{2, 4, 8, 10}
+	var weights = [4]int{6, 9, 15, 12}
 
 	var nodes []*registry.Node
 
