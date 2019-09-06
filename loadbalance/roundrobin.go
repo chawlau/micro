@@ -19,16 +19,6 @@ func (r *RoundRobinBalance) Name() string {
 	return "roundrobin"
 }
 
-/*
-func gcdNormal(x, y int) int {
-	if x%y == 0 {
-		return y
-	} else {
-		return gcdNormal(y, x%y)
-	}
-}
-*/
-
 func gcd1(m int, n int) int {
 	var r int
 	for n > 0 {
